@@ -1,11 +1,10 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:weather_project/models/weather_model.dart';
 
 class WeatherApi {
-  static const String _baseUrl = 'http://api.weatherstack.com/current';
-  static const String _apiKey = 'd23331b49cd6543ac4e2dd2a7a7ddd7e';
+  static const String _baseUrl = 'https://api.weatherstack.com/current';
+  static const String _apiKey = '6e6aec6843ed3cf3ca335f17e16ef671';
 
   Future<WeatherModel> getWeather(String city) async {
     final response =
@@ -16,8 +15,6 @@ class WeatherApi {
           'Failed to load weather data(ERROR: ${response.statusCode})');
     }
 
-    print('+++++Response status code: ${response.statusCode}');
-    print('+++++Response body: ${response.body}');
     return WeatherModel.fromJson(jsonDecode(response.body));
   }
 }
