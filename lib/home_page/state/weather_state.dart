@@ -1,11 +1,17 @@
-import 'package:weather_project/models/weather_model.dart';
+import 'package:weather_project/models/all_models.dart';
 
 class WeatherState {}
 
 class WeatherLoaded extends WeatherState {
-  final WeatherModel weather;
+  final AllModels data;
 
-  WeatherLoaded({required this.weather});
+  WeatherLoaded({required this.data});
 }
 
-class WeatherLoading extends WeatherState {}  
+class WeatherLoading extends WeatherState {}
+
+class WeatherError extends WeatherState {
+  final String message;
+
+  WeatherError({required this.message});
+}

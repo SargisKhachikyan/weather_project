@@ -15,11 +15,18 @@ class WeatherResult extends StatelessWidget {
         }
 
         if (state is WeatherLoaded) {
-          final weather = state.weather;
+          final weather = state.data.weather;
+          final countryFlag = state.data.countryFlag;
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Image.network(
+                countryFlag.flagUrl,
+                width: 64,
+                height: 64,
+                errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+              ),
               Text(
                 'Type: ${weather.type}',
                 style: const TextStyle(
@@ -67,6 +74,13 @@ class WeatherResult extends StatelessWidget {
                 style: const TextStyle(fontSize: 22),
               ),
             ],
+          );
+        }
+
+        if (state is WeatherError) {
+          return Text(
+            'Unable to load weather: ${state.message}',
+            style: const TextStyle(color: Colors.red),
           );
         }
 

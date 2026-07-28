@@ -6,7 +6,9 @@ import 'package:weather_project/home_page/presentation/widgets/weather_text_fiel
 import 'package:weather_project/home_page/state/weather_bloc.dart';
 import 'package:weather_project/home_page/state/weather_events.dart';
 import 'package:weather_project/repository/weather_repository.dart';
+import 'package:weather_project/service/country_flag_api.dart/country_flag_api.dart';
 import 'package:weather_project/service/weather_api/weather_api.dart';
+import 'package:weather_project/service/country_code_api/country_code_api.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -19,17 +21,13 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController cityController = TextEditingController();
 
   @override
-  void dispose() {
-    cityController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => WeatherBloc(
         repository: WeatherRepository(
-          weatherApiClient: WeatherApi(),
+          weatherApi: WeatherApi(),
+          countryCodeApi: CountryCodeApi(),
+          countryFlagApi: CountryFlagApi(),
         ),
       ),
       child: Builder(
