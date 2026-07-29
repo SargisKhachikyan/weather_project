@@ -7,7 +7,7 @@ class CountryFlagModel {
 
   factory CountryFlagModel.fromCountryCode(String countryCode) {
     return CountryFlagModel(
-      flagUrl: 'https://flagsapi.com/${countryCode.toUpperCase()}/flat/64.png',
+      flagUrl: 'https://flagsapi.com/flat/64.png',
     );
   }
 }

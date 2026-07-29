@@ -9,7 +9,6 @@ class CountryCodeModel {
     if (objects is! List || objects.isEmpty) {
       throw const FormatException('Objects list is empty');
     }
-    print("++++${objects}");
     final code = objects.first['codes']?['alpha_2']?.toString();
 
     if (code == null || code.isEmpty) {

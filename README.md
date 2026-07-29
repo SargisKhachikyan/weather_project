@@ -1,1 +1,3 @@
-funkcia talisenq length msg veradarcnuma String ... 
+error handling wrong city name:
+getit:
+change state,one state

@@ -25,7 +25,6 @@ class WeatherResult extends StatelessWidget {
                 countryFlag.flagUrl,
                 width: 64,
                 height: 64,
-                errorBuilder: (_, __, ___) => const SizedBox.shrink(),
               ),
               Text(
                 'Type: ${weather.type}',

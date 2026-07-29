@@ -17,7 +17,6 @@ class CountryCodeApi {
         'Authorization': 'Bearer $_apiKey',
       },
     );
-    print("+++${response} country code api ");
     if (response.statusCode != 200) {
       throw Exception(
         'Failed to load country code: ${response.statusCode}${response.body}',
