@@ -33,32 +33,55 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Builder(
         builder: (context) {
           return Scaffold(
+            backgroundColor: const Color(0xFFF5F7FA),
             appBar: AppBar(
-              title: const Center(
-                child: Text('Weather app'),
+              backgroundColor: Colors.blue.shade400,
+              title: Center(
+                child: const Text(
+                  'Weather App',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
               ),
             ),
-            body: Padding(
-              padding: const EdgeInsets.all(16),
+            body: SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  WeatherTextField(
-                    controller: cityController,
-                  ),
-                  const SizedBox(height: 12),
-                  WeatherGetButton(
-                    onPressed: () {
-                      final city = cityController.text.trim();
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(
+                      children: [
+                        const Text(
+                          'Check the weather',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        WeatherTextField(
+                          controller: cityController,
+                        ),
+                        const SizedBox(height: 14),
+                        WeatherGetButton(
+                          onPressed: () {
+                            final city = cityController.text.trim();
 
-                      if (city.isEmpty) return;
+                            if (city.isEmpty) return;
 
-                      context.read<WeatherBloc>().add(
-                            GetWeatherEvent(city),
-                          );
-                    },
+                            context.read<WeatherBloc>().add(
+                                  GetWeatherEvent(city),
+                                );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 24),
                   const WeatherResult(),
                 ],
               ),

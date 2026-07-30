@@ -13,6 +13,7 @@ class WeatherTextField extends StatelessWidget {
       controller: controller,
       decoration: const InputDecoration(
         labelText: 'City or Country',
+        
       ),
     );
   }
