@@ -1,17 +1,27 @@
 import 'package:weather_project/models/all_models.dart';
 
-class WeatherState {}
+enum WeatherStatus { initial, loading, loaded, error }
 
-class WeatherLoaded extends WeatherState {
-  final AllModels data;
+class WeatherState {
+  final WeatherStatus status;
+  final AllModels? data;
+  final String? errorMessage;
 
-  WeatherLoaded({required this.data});
-}
+  const WeatherState({
+    this.status = WeatherStatus.initial,
+    this.data,
+    this.errorMessage,
+  });
 
-class WeatherLoading extends WeatherState {}
-
-class WeatherError extends WeatherState {
-  final String message;
-
-  WeatherError({required this.message});
+  WeatherState copyWith({
+    WeatherStatus? status,
+    AllModels? data,
+    String? errorMessage,
+  }) {
+    return WeatherState(
+      status: status ?? this.status,
+      data: data ?? this.data,
+      errorMessage: errorMessage ?? this.errorMessage,
+    );
+  }
 }

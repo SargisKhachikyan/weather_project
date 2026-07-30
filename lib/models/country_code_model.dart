@@ -1,3 +1,5 @@
+import 'package:weather_project/models/city_name_is_correct.dart';
+
 class CountryCodeModel {
   final String alphaCountryCode;
 
@@ -5,6 +7,10 @@ class CountryCodeModel {
 
   factory CountryCodeModel.fromJson(Map<String, dynamic> json) {
     final objects = json['data']?['objects'];
+
+    if (objects == CityNameIsCorrect.fromJson(json).cityName) {
+      throw const FormatException('Country  is Wrong');
+    }
 
     if (objects is! List || objects.isEmpty) {
       throw const FormatException('Objects list is empty');

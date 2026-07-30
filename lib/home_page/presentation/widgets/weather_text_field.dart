@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class WeatherTextField extends StatelessWidget {
   final TextEditingController controller;
-
   const WeatherTextField({
     super.key,
     required this.controller,
@@ -13,7 +12,7 @@ class WeatherTextField extends StatelessWidget {
     return TextField(
       controller: controller,
       decoration: const InputDecoration(
-        labelText: 'City',
+        labelText: 'City or Country',
       ),
     );
   }

@@ -10,80 +10,50 @@ class WeatherResult extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<WeatherBloc, WeatherState>(
       builder: (context, state) {
-        if (state is WeatherLoading) {
-          return CircularProgressIndicator();
+        switch (state.status) {
+          case WeatherStatus.loading:
+            return const CircularProgressIndicator();
+
+          case WeatherStatus.loaded:
+            final weather = state.data!.weather;
+            final countryFlag = state.data!.countryFlag;
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.network(countryFlag.flagUrl, width: 64, height: 64),
+                Text(' Name: ${weather.query}',
+                    style: const TextStyle(fontSize: 22)),
+                Text('Language: ${weather.language}',
+                    style: const TextStyle(fontSize: 22)),
+                Text('Unit: ${weather.unit}',
+                    style: const TextStyle(fontSize: 22)),
+                Text('Name: ${weather.name}',
+                    style: const TextStyle(fontSize: 22)),
+                Text('Country: ${weather.country}',
+                    style: const TextStyle(fontSize: 22)),
+                Text('Region: ${weather.region}',
+                    style: const TextStyle(fontSize: 22)),
+                Text('TimezoneId: ${weather.timezoneId}',
+                    style: const TextStyle(fontSize: 22)),
+                Text('Temperature: ${weather.temperature}',
+                    style: const TextStyle(fontSize: 22)),
+                Text('FeelsLike: ${weather.feelsLike}',
+                    style: const TextStyle(fontSize: 22)),
+                Text('WindSpeed: ${weather.windSpeed}',
+                    style: const TextStyle(fontSize: 22)),
+              ],
+            );
+
+          case WeatherStatus.error:
+            return Text(
+              'Unable to load weather: ${state.errorMessage}',
+              style: const TextStyle(color: Colors.red),
+            );
+
+          case WeatherStatus.initial:
+            return const Text('Enter city name');
         }
-
-        if (state is WeatherLoaded) {
-          final weather = state.data.weather;
-          final countryFlag = state.data.countryFlag;
-
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image.network(
-                countryFlag.flagUrl,
-                width: 64,
-                height: 64,
-              ),
-              Text(
-                'Type: ${weather.type}',
-                style: const TextStyle(
-                  fontSize: 22,
-                ),
-              ),
-              Text(
-                'Query: ${weather.query}',
-                style: const TextStyle(fontSize: 22),
-              ),
-              Text(
-                'Language: ${weather.language}',
-                style: const TextStyle(fontSize: 22),
-              ),
-              Text(
-                'Unit: ${weather.unit}',
-                style: const TextStyle(fontSize: 22),
-              ),
-              Text(
-                'Name: ${weather.name}',
-                style: const TextStyle(fontSize: 22),
-              ),
-              Text(
-                'Country: ${weather.country}',
-                style: const TextStyle(fontSize: 22),
-              ),
-              Text(
-                'Region: ${weather.region}',
-                style: const TextStyle(fontSize: 22),
-              ),
-              Text(
-                'TimezoneId: ${weather.timezoneId}',
-                style: const TextStyle(fontSize: 22),
-              ),
-              Text(
-                'Temperature: ${weather.temperature}',
-                style: const TextStyle(fontSize: 22),
-              ),
-              Text(
-                'FeelsLike: ${weather.feelsLike}',
-                style: const TextStyle(fontSize: 22),
-              ),
-              Text(
-                'WindSpeed: ${weather.windSpeed}',
-                style: const TextStyle(fontSize: 22),
-              ),
-            ],
-          );
-        }
-
-        if (state is WeatherError) {
-          return Text(
-            'Unable to load weather: ${state.message}',
-            style: const TextStyle(color: Colors.red),
-          );
-        }
-
-        return const Text('Enter city name');
       },
     );
   }
