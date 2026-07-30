@@ -1,20 +1,19 @@
 import 'package:weather_project/models/all_models.dart';
 
-enum WeatherStatus { initial, loading, loaded, error }
-
+enum WeatherStatusEnum { initial, loading, loaded, error }
 class WeatherState {
-  final WeatherStatus status;
+  final WeatherStatusEnum status;
   final AllModels? data;
   final String? errorMessage;
 
   const WeatherState({
-    this.status = WeatherStatus.initial,
+    this.status = WeatherStatusEnum.initial,
     this.data,
     this.errorMessage,
   });
 
   WeatherState copyWith({
-    WeatherStatus? status,
+    WeatherStatusEnum? status,
     AllModels? data,
     String? errorMessage,
   }) {

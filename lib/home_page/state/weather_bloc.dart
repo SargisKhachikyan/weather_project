@@ -10,15 +10,15 @@ class WeatherBloc extends Bloc<WeatherEvents, WeatherState> {
     required this.repository,
   }) : super(WeatherState()) {
     on<GetWeatherEvent>((event, emit) async {
-      emit(WeatherState(status: WeatherStatus.loading));
+      emit(WeatherState(status: WeatherStatusEnum.loading));
 
       try {
         final data = await repository.getAllData(event.location);
 
-        emit(WeatherState(status: WeatherStatus.loaded, data: data));
+        emit(WeatherState(status: WeatherStatusEnum.loaded, data: data));
       } catch (error) {
         emit(WeatherState(
-            status: WeatherStatus.error, errorMessage: error.toString()));
+            status: WeatherStatusEnum.error, errorMessage: error.toString()));
       }
     });
   }

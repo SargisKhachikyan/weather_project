@@ -11,10 +11,10 @@ class WeatherResult extends StatelessWidget {
     return BlocBuilder<WeatherBloc, WeatherState>(
       builder: (context, state) {
         switch (state.status) {
-          case WeatherStatus.loading:
+          case WeatherStatusEnum.loading:
             return const CircularProgressIndicator();
 
-          case WeatherStatus.loaded:
+          case WeatherStatusEnum.loaded:
             final weather = state.data!.weather;
             final countryFlag = state.data!.countryFlag;
 
@@ -45,13 +45,13 @@ class WeatherResult extends StatelessWidget {
               ],
             );
 
-          case WeatherStatus.error:
+          case WeatherStatusEnum.error:
             return Text(
               'Unable to load weather: ${state.errorMessage}',
               style: const TextStyle(color: Colors.red),
             );
 
-          case WeatherStatus.initial:
+          case WeatherStatusEnum.initial:
             return const Text('Enter city name');
         }
       },
