@@ -12,4 +12,5 @@ class AllModels {
     required this.countryCode,
     required this.countryFlag,
   });
+
 }

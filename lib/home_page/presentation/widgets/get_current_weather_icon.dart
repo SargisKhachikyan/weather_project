@@ -1,0 +1,47 @@
+import 'package:flutter/material.dart';
+import 'package:weather_icons/weather_icons.dart';
+
+class GetCurrentWeatherIcon extends StatelessWidget {
+  final double temperature;
+  final double? size;
+  final Color color;
+  const GetCurrentWeatherIcon({
+    super.key,
+    required this.temperature,
+    required this.size,
+    required this.color,
+  });
+
+  BoxedIcon get _getIconForTemperature {
+    if (temperature >= 28) {
+      return BoxedIcon(
+        WeatherIcons.day_sunny,
+        size: size,
+        color: color,
+      );
+    } else if (temperature >= 20) {
+      return BoxedIcon(
+        WeatherIcons.day_cloudy,
+        size: size,
+        color: color,
+      );
+    } else if (temperature >= 10) {
+      return BoxedIcon(
+        WeatherIcons.day_rain_mix,
+        size: size,
+        color: color,
+      );
+    } else {
+      return BoxedIcon(
+        WeatherIcons.day_snow,
+        size: size,
+        color: color,
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _getIconForTemperature;
+  }
+}

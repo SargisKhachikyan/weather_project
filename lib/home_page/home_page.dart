@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_project/home_page/presentation/widgets/get_current_weather_icon.dart';
+import 'package:weather_project/home_page/presentation/widgets/home_page_main_widgets_data.dart';
 import 'package:weather_project/home_page/presentation/widgets/weather_get_button.dart';
-import 'package:weather_project/home_page/presentation/widgets/weather_results.dart';
 import 'package:weather_project/home_page/presentation/widgets/weather_text_field.dart';
 import 'package:weather_project/home_page/state/weather_bloc.dart';
 import 'package:weather_project/home_page/state/weather_events.dart';
+import 'package:weather_project/home_page/state/weather_state.dart';
 import 'package:weather_project/repository/weather_repository.dart';
 import 'package:weather_project/service/country_flag_api.dart/country_flag_api.dart';
 import 'package:weather_project/service/weather_api/weather_api.dart';
@@ -33,13 +35,16 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Builder(
         builder: (context) {
           return Scaffold(
-            backgroundColor: const Color(0xFFF5F7FA),
+            backgroundColor: const Color(0xFFEAF4FF),
             appBar: AppBar(
-              backgroundColor: Colors.blue.shade400,
+              backgroundColor: const Color(0xFF2F80ED),
               title: Center(
                 child: const Text(
-                  'Weather App',
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                  'Weather',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ),
@@ -82,7 +87,38 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  const WeatherResult(),
+                  BlocBuilder<WeatherBloc, WeatherState>(
+                    builder: (context, state) {
+                      if (state.status == WeatherStatusEnum.loading) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+
+                      if (state.status == WeatherStatusEnum.error) {
+                        return Text(
+                          'Sorry, something went wrong :(',
+                          style: TextStyle(
+                            color: Colors.red.shade400,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        );
+                      }
+
+                      if (state.data != null) {
+                        final weather = state.data!.weather;
+                        final flag = state.data!.countryFlag.flagUrl;
+                        final temperature = weather.temperature.toDouble();
+
+                        return HomePageMainWidgetsData(
+                          flag: flag,
+                          weather: weather,
+                          temperature: temperature,
+                        );
+                      }
+
+                      return const SizedBox();
+                    },
+                  ),
                 ],
               ),
             ),

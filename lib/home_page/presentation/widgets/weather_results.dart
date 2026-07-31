@@ -51,8 +51,8 @@ class WeatherResult extends StatelessWidget {
               style: const TextStyle(color: Colors.red),
             );
 
-          case WeatherStatusEnum.initial:
-            return const Text('Enter city name');
+          default:
+            return const SizedBox();
         }
       },
     );
