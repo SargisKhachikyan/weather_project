@@ -5,3 +5,4 @@ class GetWeatherEvent extends WeatherEvents {
 
   GetWeatherEvent(this.location);
 }
+ 
