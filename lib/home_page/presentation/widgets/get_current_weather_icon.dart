@@ -5,6 +5,7 @@ class GetCurrentWeatherIcon extends StatelessWidget {
   final double temperature;
   final double? size;
   final Color color;
+
   const GetCurrentWeatherIcon({
     super.key,
     required this.temperature,
@@ -12,7 +13,8 @@ class GetCurrentWeatherIcon extends StatelessWidget {
     required this.color,
   });
 
-  BoxedIcon get _getIconForTemperature {
+  @override
+  Widget build(BuildContext context) {
     if (temperature >= 28) {
       return BoxedIcon(
         WeatherIcons.day_sunny,
@@ -38,10 +40,5 @@ class GetCurrentWeatherIcon extends StatelessWidget {
         color: color,
       );
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return _getIconForTemperature;
   }
 }

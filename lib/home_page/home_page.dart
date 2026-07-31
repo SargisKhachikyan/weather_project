@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:weather_project/home_page/presentation/widgets/get_current_weather_icon.dart';
 import 'package:weather_project/home_page/presentation/widgets/home_page_main_widgets_data.dart';
 import 'package:weather_project/home_page/presentation/widgets/weather_get_button.dart';
 import 'package:weather_project/home_page/presentation/widgets/weather_text_field.dart';
