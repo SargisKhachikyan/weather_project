@@ -19,25 +19,25 @@ class GetCurrentWeatherIcon extends StatelessWidget {
       return BoxedIcon(
         WeatherIcons.day_sunny,
         size: size,
-        color: color,
+        color: Colors.amber,
       );
     } else if (temperature >= 20) {
       return BoxedIcon(
         WeatherIcons.day_cloudy,
         size: size,
-        color: color,
+        color: Colors.grey,
       );
     } else if (temperature >= 10) {
       return BoxedIcon(
         WeatherIcons.day_rain_mix,
         size: size,
-        color: color,
+        color: Colors.indigo,
       );
     } else {
       return BoxedIcon(
         WeatherIcons.day_snow,
         size: size,
-        color: color,
+        color: Colors.blueAccent,
       );
     }
   }

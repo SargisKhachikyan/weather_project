@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:weather_project/home_page/home_page.dart';
 import 'package:weather_project/service/locator/locator.dart';
 
-void main() {
-  setupLocator();
+void main() async {
+  await Locator().registerDependencies();
   runApp(const MyApp());
 }
 
