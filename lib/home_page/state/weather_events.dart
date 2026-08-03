@@ -5,4 +5,9 @@ class GetWeatherEvent extends WeatherEvents {
 
   GetWeatherEvent(this.location);
 }
- 
+
+class LoadWeatherEvent extends WeatherEvents {
+  final String location;
+
+  LoadWeatherEvent(this.location);
+}

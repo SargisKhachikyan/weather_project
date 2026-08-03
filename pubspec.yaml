@@ -41,6 +41,7 @@ dependencies:
   get_it: ^9.2.1
   weather_icons: ^3.0.0
   sqflite: ^2.3.0
+  path: ^1.9.1
  
 
 dev_dependencies:

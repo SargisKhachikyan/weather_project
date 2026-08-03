@@ -4,6 +4,7 @@ import 'package:weather_project/repository/weather_repository.dart';
 import 'package:weather_project/service/country_code_api/country_code_api.dart';
 import 'package:weather_project/service/country_flag_api.dart/country_flag_api.dart';
 import 'package:weather_project/service/weather_api/weather_api.dart';
+import 'package:weather_project/service/weather_database/weather_database.dart';
 
 final weatherGetIt = GetIt.instance;
 
@@ -12,10 +13,16 @@ class Locator {
     weatherGetIt.registerLazySingleton<CountryCodeApi>(
       () => CountryCodeApi(),
     );
+
     weatherGetIt.registerLazySingleton<CountryFlagApi>(
       () => CountryFlagApi(),
     );
+
     weatherGetIt.registerLazySingleton<WeatherApi>(() => WeatherApi());
+
+    weatherGetIt.registerLazySingleton<WeatherDatabase>(
+      () => WeatherDatabase(),
+    );
 
     weatherGetIt.registerLazySingleton<WeatherRepository>(
       () => WeatherRepository(
@@ -26,7 +33,10 @@ class Locator {
     );
 
     weatherGetIt.registerLazySingleton<WeatherBloc>(
-      () => WeatherBloc(repository: weatherGetIt.get<WeatherRepository>()),
+      () => WeatherBloc(
+        repository: weatherGetIt.get<WeatherRepository>(),
+        database: weatherGetIt.get<WeatherDatabase>(),
+      ),
     );
   }
 }

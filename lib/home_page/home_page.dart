@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_project/home_page/presentation/widgets/home_page_main_widgets_data.dart';
 import 'package:weather_project/home_page/presentation/widgets/weather_get_button.dart';
+import 'package:weather_project/home_page/presentation/widgets/weather_history_widget.dart';
 import 'package:weather_project/home_page/presentation/widgets/weather_text_field.dart';
 import 'package:weather_project/home_page/state/weather_bloc.dart';
 import 'package:weather_project/home_page/state/weather_events.dart';
@@ -28,8 +29,8 @@ class _MyHomePageState extends State<MyHomePage> {
             backgroundColor: const Color(0xFFEAF4FF),
             appBar: AppBar(
               backgroundColor: const Color(0xFF2F80ED),
-              title: Center(
-                child: const Text(
+              title: const Center(
+                child: Text(
                   'Weather',
                   style: TextStyle(
                     color: Colors.white,
@@ -80,7 +81,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   BlocBuilder<WeatherBloc, WeatherState>(
                     builder: (context, state) {
                       if (state.status == WeatherStatusEnum.loading) {
-                        return const Center(child: CircularProgressIndicator());
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
                       }
 
                       if (state.status == WeatherStatusEnum.error) {
@@ -97,16 +100,23 @@ class _MyHomePageState extends State<MyHomePage> {
                       if (state.data != null) {
                         final weather = state.data!.weather;
                         final flag = state.data!.countryFlag.flagUrl;
-                        final temperature = weather.temperature.toDouble();
 
                         return HomePageMainWidgetsData(
                           flag: flag,
                           weather: weather,
-                          temperature: temperature,
+                          temperature: weather.temperature.toDouble(),
                         );
                       }
 
                       return const SizedBox();
+                    },
+                  ),
+                  const SizedBox(height: 24),
+                  BlocBuilder<WeatherBloc, WeatherState>(
+                    builder: (context, state) {
+                      return WeatherHistoryWidget(
+                        history: state.weatherHistory,
+                      );
                     },
                   ),
                 ],
