@@ -4,7 +4,7 @@ import 'package:weather_project/models/weather_model.dart';
 
 class WeatherApi {
   static const String _baseUrl = 'https://api.weatherstack.com/current';
-  static const String _apiKey = '728a559ad7d424a41305b96290035fcc';
+  static const String _apiKey = '1d4ba8d1fea48bf1e39b6007ae79d2d0';
 
   Future<WeatherModel> getWeather(String city) async {
     final response =
@@ -15,6 +15,6 @@ class WeatherApi {
           'Failed to load weather data(ERROR: ${response.statusCode})');
     }
 
-    return WeatherModel.fromJson(jsonDecode(response.body));
+    return WeatherModel.fromJson(jsonDecode(response.body), city);
   }
 }

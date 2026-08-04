@@ -1,4 +1,3 @@
-import 'package:weather_project/service/weather_database/weather_database.dart';
 
 class WeatherEvents {}
 

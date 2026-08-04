@@ -3,6 +3,7 @@ import 'package:weather_project/home_page/home_page.dart';
 import 'package:weather_project/service/locator/locator.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Locator().registerDependencies();
   runApp(const MyApp());
 }

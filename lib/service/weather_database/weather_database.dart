@@ -3,56 +3,53 @@ import 'package:sqflite/sqflite.dart';
 
 class WeatherDatabase {
   Database? _db;
+  static const String tableName = 'weather_info';
 
-  Future<Database> getDb() async {
-    if (_db != null) return _db!;
-    _db = await _initDB();
-    return _db!;
-  }
-
-  Future<Database> _initDB() async {
-    final path = join(await getDatabasesPath(), 'weather.db');
-
-    return openDatabase(
-      path,
-      version: 1,
-      onCreate: (db, version) async {
-        await db.execute('''
-          CREATE TABLE weather_data(
+  Future<bool> initDB() async {
+    try {
+      final path = join(await getDatabasesPath(), 'weather.db');
+      _db = await openDatabase(
+        path,
+        version: 1,
+        onCreate: (db, version) async {
+          await db.execute('''
+          CREATE TABLE weather_info (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            country TEXT,
-            temperature REAL,
-            flag TEXT
+            city_name TEXT,
+            wind_speed TEXT,
+            flag_local_path TEXT,
+            temperature DOUBLE
           )
         ''');
-      },
-    );
+        },
+      );
+      print('DB path $path');
+
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
-  Future<void> insertCountry({
-    required String country,
-    required double temperature,
-    required String flag,
-  }) async {
-    final db = await getDb();
-
-    await db.insert(
-      'weather_data',
-      {
-        'country': country,
-        'temperature': temperature,
-        'flag': flag,
-      },
+  Future<void> insertCountry({required Map<String, Object?> json}) async {
+    await _db!.insert(
+      tableName,
+      json,
     );
+    
   }
 
   Future<List<Map<String, dynamic>>> getAllCountries() async {
-    final db = await getDb();
-    return db.query('weather_data');
+    return _db!.query(tableName);
   }
 
   Future<void> clearAll() async {
-    final db = await getDb();
-    await db.delete('weather_data');
+    await _db!.delete(tableName);
+  }
+
+  Future<void> getOnlyCountries() async {}
+
+  Future<void> deleteDb() async {
+    await _db!.delete(tableName);
   }
 }

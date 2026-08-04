@@ -10,21 +10,24 @@ class WeatherModel {
   final int temperature;
   final int feelsLike;
   final int windSpeed;
+  final String location;
 
-  WeatherModel(
-      {required this.type,
-      required this.query,
-      required this.language,
-      required this.unit,
-      required this.name,
-      required this.country,
-      required this.region,
-      required this.timezoneId,
-      required this.temperature,
-      required this.feelsLike,
-      required this.windSpeed});
+  WeatherModel({
+    required this.type,
+    required this.query,
+    required this.language,
+    required this.unit,
+    required this.name,
+    required this.country,
+    required this.region,
+    required this.timezoneId,
+    required this.temperature,
+    required this.feelsLike,
+    required this.windSpeed,
+    required this.location,
+  });
 
-  factory WeatherModel.fromJson(Map<String, dynamic> json) {
+  factory WeatherModel.fromJson(Map<String, dynamic> json, String location) {
     return WeatherModel(
       type: json['request']['type'],
       query: json['request']['query'],
@@ -37,6 +40,7 @@ class WeatherModel {
       temperature: json['current']['temperature'],
       feelsLike: json['current']['feelslike'],
       windSpeed: json['current']['wind_speed'],
+      location: location
     );
   }
 }
