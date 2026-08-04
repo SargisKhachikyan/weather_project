@@ -1,3 +1,5 @@
+import 'package:weather_project/service/weather_database/weather_database.dart';
+
 class WeatherEvents {}
 
 class GetWeatherEvent extends WeatherEvents {
@@ -10,4 +12,8 @@ class LoadWeatherEvent extends WeatherEvents {
   final String location;
 
   LoadWeatherEvent(this.location);
+}
+
+class ClearAll extends WeatherEvents {
+  ClearAll();
 }

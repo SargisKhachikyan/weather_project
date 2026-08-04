@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_project/home_page/presentation/widgets/home_page_main_widgets_data.dart';
 import 'package:weather_project/home_page/presentation/widgets/weather_get_button.dart';
-import 'package:weather_project/home_page/presentation/widgets/weather_history_widget.dart';
+import 'package:weather_project/home_page/presentation/widgets/weather_seach_history_button_clear.dart';
+import 'package:weather_project/home_page/presentation/widgets/weather_search_history_list.dart';
 import 'package:weather_project/home_page/presentation/widgets/weather_text_field.dart';
 import 'package:weather_project/home_page/state/weather_bloc.dart';
 import 'package:weather_project/home_page/state/weather_events.dart';
@@ -91,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           'Sorry, something went wrong :(',
                           style: TextStyle(
                             color: Colors.red.shade400,
-                            fontSize: 18,
+                            fontSize: 22,
                             fontWeight: FontWeight.w600,
                           ),
                         );
@@ -107,16 +108,24 @@ class _MyHomePageState extends State<MyHomePage> {
                           temperature: weather.temperature.toDouble(),
                         );
                       }
-
                       return const SizedBox();
                     },
                   ),
                   const SizedBox(height: 24),
+                  WeatherSearchHistoryButtonClear(),
+                  const SizedBox(height: 24),
                   BlocBuilder<WeatherBloc, WeatherState>(
                     builder: (context, state) {
-                      return WeatherHistoryWidget(
-                        history: state.weatherHistory,
-                      );
+                      final history = state.weatherHistory;
+
+                      if (history.isEmpty) {
+                        return const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          child: Text('No history'),
+                        );
+                      }
+
+                      return WeatherSearchHistoryList();
                     },
                   ),
                 ],
