@@ -1,1 +1,0 @@
-add database to the project,last country or city add to database no internet
