@@ -34,26 +34,37 @@ class WeatherBloc extends Bloc<WeatherEvents, WeatherState> {
           //Get Map<String, Object?> city weather data
         }
 
+        final history = await database.getAllCountries();
+
         emit(WeatherState(
           status: WeatherStatusEnum.loaded,
           data: data,
+          weatherHistory: history, // добавлено
         ));
       } catch (error) {
         emit(WeatherState(
             status: WeatherStatusEnum.error, errorMessage: error.toString()));
       }
     });
-    on<LoadWeatherEvent>((event, emit) async {
-      emit(WeatherState(status: WeatherStatusEnum.loading));
-      final data = await repository.getAllData(event.location);
-      final history = await database.getAllCountries();
 
-      emit(WeatherState(
-        status: WeatherStatusEnum.loaded,
-        data: data,
-        weatherHistory: history,
-      ));
+    on<LoadWeatherEvent>((event, emit) async {
+      try {
+        emit(state.copyWith(status: WeatherStatusEnum.loading));
+
+        final history = await database.getAllCountries();
+
+        emit(state.copyWith(
+          status: WeatherStatusEnum.loaded,
+          weatherHistory: history,
+        ));
+      } catch (e) {
+        emit(state.copyWith(
+          status: WeatherStatusEnum.error,
+          errorMessage: e.toString(),
+        ));
+      }
     });
+
     on<ClearAll>((event, emit) async {
       await database.clearAll();
       emit(WeatherState(

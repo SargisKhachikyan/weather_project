@@ -10,7 +10,7 @@ class WeatherDatabase {
       final path = join(await getDatabasesPath(), 'weather.db');
       _db = await openDatabase(
         path,
-        version: 1,
+        version: 2,
         onCreate: (db, version) async {
           await db.execute('''
           CREATE TABLE weather_info (
@@ -27,6 +27,7 @@ class WeatherDatabase {
 
       return true;
     } catch (e) {
+      print('Error initializing database: $e   (try catch)');
       return false;
     }
   }
@@ -36,7 +37,6 @@ class WeatherDatabase {
       tableName,
       json,
     );
-    
   }
 
   Future<List<Map<String, dynamic>>> getAllCountries() async {

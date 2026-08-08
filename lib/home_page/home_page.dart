@@ -22,6 +22,12 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController cityController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    context.read<WeatherBloc>().add(LoadWeatherEvent(''));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
@@ -118,21 +124,21 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     const SizedBox(height: 24),
                     WeatherSearchHistoryButtonClear(),
-                    // const SizedBox(height: 24),
-                    // BlocBuilder<WeatherBloc, WeatherState>(
-                    //   builder: (context, state) {
-                    //     final history = state.weatherHistory;
+                    const SizedBox(height: 24),
+                    BlocBuilder<WeatherBloc, WeatherState>(
+                      builder: (context, state) {
+                        final history = state.weatherHistory;
 
-                    //     if (history.isEmpty) {
-                    //       return const Padding(
-                    //         padding: EdgeInsets.symmetric(vertical: 16),
-                    //         child: Text('No history'),
-                    //       );
-                    //     }
+                        if (history.isEmpty) {
+                          return const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 16),
+                            child: Text('No history'),
+                          );
+                        }
 
-                    //     return WeatherSearchHistoryList();
-                    //   },
-                    // ),
+                        return WeatherSearchHistoryList();
+                      },
+                    ),
                   ],
                 ),
               ),

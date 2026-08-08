@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_project/home_page/state/weather_bloc.dart';
@@ -21,17 +23,18 @@ class _WeatherSearchHistoryListState extends State<WeatherSearchHistoryList> {
       itemBuilder: (context, index) {
         final item = history[index];
 
-        final country = item['country'] as String? ?? '';
+        final country = item['city_name'] as String? ?? '';
         final temperature = item['temperature'] as double? ?? 0.0;
-        final flag = item['flag'] as String? ?? '';
+        final flag = item['flag_local_path'] as String? ?? '';
+        final windSpeed = item['wind_speed'] as String? ?? '';
 
         return ListTile(
-          leading: Image.network(
-            flag,
+          leading: Image.file(
+            File(flag),
             width: 32,
           ),
           title: Text(country),
-          subtitle: Text('$temperature°'),
+          subtitle: Text('$temperature° (Wind: $windSpeed)'),
         );
       },
     );

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart'; // добавлено
 import 'package:weather_project/home_page/home_page.dart';
+import 'package:weather_project/home_page/state/weather_bloc.dart'; // добавлено
 import 'package:weather_project/service/locator/locator.dart';
 
 void main() async {
@@ -13,9 +15,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
+    return BlocProvider<WeatherBloc>(
+      create: (_) => weatherGetIt.get<WeatherBloc>(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: const MyHomePage(),
+      ),
     );
   }
 }
