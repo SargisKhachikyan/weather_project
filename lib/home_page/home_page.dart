@@ -21,6 +21,12 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController cityController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    context.read<WeatherBloc>().add(LoadWeatherEvent(''));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: weatherGetIt.get<WeatherBloc>(),
@@ -77,39 +83,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 24),
-                  BlocBuilder<WeatherBloc, WeatherState>(
-                    builder: (context, state) {
-                      if (state.status == WeatherStatusEnum.loading) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-
-                      if (state.status == WeatherStatusEnum.error) {
-                        return Text(
-                          'Sorry, something went wrong :(',
-                          style: TextStyle(
-                            color: Colors.red.shade400,
-                            fontSize: 22,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        );
-                      }
-
-                      if (state.data != null) {
-                        final weather = state.data!.weather;
-                        final flag = state.data!.countryFlag.flagUrl;
-
-                        return HomePageMainWidgetsData(
-                          flag: flag,
-                          weather: weather,
-                          temperature: weather.temperature.toDouble(),
-                        );
-                      }
-                      return const SizedBox();
-                    },
                   ),
                   const SizedBox(height: 24),
                   WeatherSearchHistoryButtonClear(),

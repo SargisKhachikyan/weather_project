@@ -4,10 +4,31 @@ import 'package:sqflite/sqflite.dart';
 class WeatherDatabase {
   Database? _db;
 
-  Future<Database> getDb() async {
-    if (_db != null) return _db!;
-    _db = await _initDB();
-    return _db!;
+  Future<bool> initDB() async {
+    try {
+      final path = join(await getDatabasesPath(), 'weather.db');
+      _db = await openDatabase(
+        path,
+        version: 2,
+        onCreate: (db, version) async {
+          await db.execute('''
+          CREATE TABLE weather_info (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            city_name TEXT,
+            wind_speed TEXT,
+            flag_local_path TEXT,
+            temperature DOUBLE
+          )
+        ''');
+        },
+      );
+      print('DB path $path');
+
+      return true;
+    } catch (e) {
+      print('Error initializing database: $e   (try catch)');
+      return false;
+    }
   }
 
   Future<Database> _initDB() async {
@@ -27,6 +48,10 @@ class WeatherDatabase {
         ''');
       },
     );
+  }
+
+  Future<Database> getDb() async {
+    return _db ?? await _initDB();
   }
 
   Future<void> insertCountry({
