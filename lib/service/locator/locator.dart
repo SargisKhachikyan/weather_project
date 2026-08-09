@@ -20,13 +20,8 @@ class Locator {
 
     weatherGetIt.registerLazySingleton<WeatherApi>(() => WeatherApi());
 
-    final db = WeatherDatabase();
-    if (!(await db.initDB())) {
-      throw Exception();
-    }
-    
     weatherGetIt.registerLazySingleton<WeatherDatabase>(
-      () => db,
+      () => WeatherDatabase(),
     );
 
     weatherGetIt.registerLazySingleton<WeatherRepository>(

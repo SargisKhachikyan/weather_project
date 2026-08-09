@@ -3,7 +3,6 @@ import 'package:sqflite/sqflite.dart';
 
 class WeatherDatabase {
   Database? _db;
-  static const String tableName = 'weather_info';
 
   Future<bool> initDB() async {
     try {
@@ -32,24 +31,53 @@ class WeatherDatabase {
     }
   }
 
-  Future<void> insertCountry({required Map<String, Object?> json}) async {
-    await _db!.insert(
-      tableName,
-      json,
+  Future<Database> _initDB() async {
+    final path = join(await getDatabasesPath(), 'weather.db');
+
+    return openDatabase(
+      path,
+      version: 1,
+      onCreate: (db, version) async {
+        await db.execute('''
+          CREATE TABLE weather_data(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            country TEXT,
+            temperature REAL,
+            flag TEXT
+          )
+        ''');
+      },
+    );
+  }
+
+  Future<Database> getDb() async {
+    return _db ?? await _initDB();
+  }
+
+  Future<void> insertCountry({
+    required String country,
+    required double temperature,
+    required String flag,
+  }) async {
+    final db = await getDb();
+
+    await db.insert(
+      'weather_data',
+      {
+        'country': country,
+        'temperature': temperature,
+        'flag': flag,
+      },
     );
   }
 
   Future<List<Map<String, dynamic>>> getAllCountries() async {
-    return _db!.query(tableName);
+    final db = await getDb();
+    return db.query('weather_data');
   }
 
   Future<void> clearAll() async {
-    await _db!.delete(tableName);
-  }
-
-  Future<void> getOnlyCountries() async {}
-
-  Future<void> deleteDb() async {
-    await _db!.delete(tableName);
+    final db = await getDb();
+    await db.delete('weather_data');
   }
 }

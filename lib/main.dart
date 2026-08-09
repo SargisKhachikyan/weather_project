@@ -5,7 +5,6 @@ import 'package:weather_project/home_page/state/weather_bloc.dart'; // доба�
 import 'package:weather_project/service/locator/locator.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
   await Locator().registerDependencies();
   runApp(const MyApp());
 }

@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
@@ -24,14 +22,26 @@ class WeatherBloc extends Bloc<WeatherEvents, WeatherState> {
       try {
         AllModels? data;
         final hasInternetConnection = await _hasInternetConnection();
+
         if (hasInternetConnection) {
           data = await repository.getAllData(event.location);
-          final localPath = await _getFlagLocalPath(
-              data.countryFlag.flagUrl, data.weather.country);
 
-          await database.insertCountry(json: data.toJson(localPath));
+          final localFlagPath = await _getFlagLocalPath(
+            data.countryFlag.flagUrl,
+            data.weather.country,
+          );
+
+          await database.insertCountry(
+            country: data.weather.country,
+            temperature: data.weather.temperature.toDouble(),
+            flag: localFlagPath,
+          );
         } else {
-          //Get Map<String, Object?> city weather data
+          emit(state.copyWith(
+            status: WeatherStatusEnum.error,
+            errorMessage: 'No internet connection',
+          ));
+          return;
         }
 
         final history = await database.getAllCountries();
@@ -39,11 +49,13 @@ class WeatherBloc extends Bloc<WeatherEvents, WeatherState> {
         emit(WeatherState(
           status: WeatherStatusEnum.loaded,
           data: data,
-          weatherHistory: history, // добавлено
+          weatherHistory: history,
         ));
       } catch (error) {
         emit(WeatherState(
-            status: WeatherStatusEnum.error, errorMessage: error.toString()));
+          status: WeatherStatusEnum.error,
+          errorMessage: error.toString(),
+        ));
       }
     });
 
@@ -75,36 +87,29 @@ class WeatherBloc extends Bloc<WeatherEvents, WeatherState> {
     });
   }
 
-  Future<String> _getFlagLocalPath(String flagHttpPath, String city) async {
-    final response = await http.get(Uri.parse(flagHttpPath));
+  Future<bool> _hasInternetConnection() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
+    } on SocketException catch (_) {
+      return false;
+    }
+  }
+
+  Future<String> _getFlagLocalPath(String flagUrl, String countryName) async {
+    final response = await http.get(Uri.parse(flagUrl));
 
     if (response.statusCode != 200) {
-      throw Exception('Failed to download image');
+      throw Exception('Failed to download flag image');
     }
 
     final directory = await getApplicationDocumentsDirectory();
+    final fileName = '${countryName.replaceAll(' ', '_')}_flag.png';
+    final filePath = '${directory.path}/$fileName';
 
-    final imageExtension = _getImageExtension(flagHttpPath);
-
-    final file = File('${directory.path}/${city}_image.$imageExtension');
-
+    final file = File(filePath);
     await file.writeAsBytes(response.bodyBytes);
 
-    return file.path;
-  }
-
-  String _getImageExtension(String path) {
-    final uri = Uri.parse(path);
-    final fileName = uri.pathSegments.last;
-
-    return fileName.split('.').last.toLowerCase();
-  }
-
-  Future<bool> _hasInternetConnection() async {
-    final connectivityResult = await Connectivity().checkConnectivity();
-
-    return connectivityResult.contains(ConnectivityResult.wifi) ||
-        connectivityResult.contains(ConnectivityResult.mobile) ||
-        connectivityResult.contains(ConnectivityResult.ethernet);
+    return filePath;
   }
 }

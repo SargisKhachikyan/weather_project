@@ -1,4 +1,3 @@
-
 class WeatherEvents {}
 
 class GetWeatherEvent extends WeatherEvents {
