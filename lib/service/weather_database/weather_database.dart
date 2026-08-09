@@ -26,7 +26,6 @@ class WeatherDatabase {
 
       return true;
     } catch (e) {
-      print('Error initializing database: $e   (try catch)');
       return false;
     }
   }
