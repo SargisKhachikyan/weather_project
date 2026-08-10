@@ -4,7 +4,7 @@ import 'package:weather_project/models/weather_model.dart';
 
 class WeatherApi {
   static const String _baseUrl = 'https://api.weatherstack.com/current';
-  static const String _apiKey = '1d4ba8d1fea48bf1e39b6007ae79d2d0';
+  static const String _apiKey = '9191106744f5c0ae9147b8779db35e67';
 
   Future<WeatherModel> getWeather(String city) async {
     final response =

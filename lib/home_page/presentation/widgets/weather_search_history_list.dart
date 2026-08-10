@@ -16,6 +16,7 @@ class _WeatherSearchHistoryListState extends State<WeatherSearchHistoryList> {
   @override
   Widget build(BuildContext context) {
     final history = context.watch<WeatherBloc>().state.weatherHistory;
+
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -23,19 +24,25 @@ class _WeatherSearchHistoryListState extends State<WeatherSearchHistoryList> {
       itemBuilder: (context, index) {
         final item = history[index];
 
-        final country = item['city_name'] as String? ?? '';
-        final temperature = item['temperature'] as double? ?? 0.0;
-        final flag = item['flag_local_path'] as String? ?? '';
-        final windSpeed = item['wind_speed'] as String? ?? '';
+        final country = item['country']?.toString() ?? '';
+        final temperature = item['temperature']?.toString() ?? 'unknown';
+        final flag = item['flag']?.toString() ?? '';
+        final windSpeed = item['wind_speed']?.toString() ?? 'unknown';
 
         return ListTile(
-          leading: Image.file(
-            File(flag),
-            width: 32,
-          ),
-          title: Text(country),
+          leading: flag.isNotEmpty
+              ? Image.file(
+                  File(flag),
+                  width: 32,
+                )
+              : const Icon(
+                  Icons.flag,
+                  size: 32,
+                ),
+          title: Text(country.isNotEmpty ? country : 'Unknown location'),
           subtitle: Text('$temperature° (Wind: $windSpeed)'),
         );
+
       },
     );
   }

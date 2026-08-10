@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_project/home_page/presentation/widgets/weather_get_button.dart';
+import 'package:weather_project/home_page/presentation/widgets/weather_results.dart';
 import 'package:weather_project/home_page/presentation/widgets/weather_seach_history_button_clear.dart';
 import 'package:weather_project/home_page/presentation/widgets/weather_search_history_list.dart';
 import 'package:weather_project/home_page/presentation/widgets/weather_text_field.dart';
@@ -80,6 +81,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 );
                           },
                         ),
+                        const SizedBox(height: 18),
+                        const WeatherResult(),
                       ],
                     ),
                   ),

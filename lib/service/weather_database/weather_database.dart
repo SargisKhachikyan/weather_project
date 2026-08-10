@@ -9,15 +9,15 @@ class WeatherDatabase {
       final path = join(await getDatabasesPath(), 'weather.db');
       _db = await openDatabase(
         path,
-        version: 2,
+        version: 1,
         onCreate: (db, version) async {
           await db.execute('''
-          CREATE TABLE weather_info (
+          CREATE TABLE weather_data (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            city_name TEXT,
-            wind_speed TEXT,
-            flag_local_path TEXT,
-            temperature DOUBLE
+            country TEXT,
+            temperature REAL,
+            flag TEXT,
+            wind_speed TEXT
           )
         ''');
         },
@@ -30,33 +30,17 @@ class WeatherDatabase {
     }
   }
 
-  Future<Database> _initDB() async {
-    final path = join(await getDatabasesPath(), 'weather.db');
-
-    return openDatabase(
-      path,
-      version: 1,
-      onCreate: (db, version) async {
-        await db.execute('''
-          CREATE TABLE weather_data(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            country TEXT,
-            temperature REAL,
-            flag TEXT
-          )
-        ''');
-      },
-    );
-  }
-
   Future<Database> getDb() async {
-    return _db ?? await _initDB();
+    if (_db != null) return _db!;
+    await initDB();
+    return _db!;
   }
 
   Future<void> insertCountry({
     required String country,
     required double temperature,
     required String flag,
+    String? windSpeed,
   }) async {
     final db = await getDb();
 
@@ -66,6 +50,7 @@ class WeatherDatabase {
         'country': country,
         'temperature': temperature,
         'flag': flag,
+        'wind_speed': windSpeed,
       },
     );
   }

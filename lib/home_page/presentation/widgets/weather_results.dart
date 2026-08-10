@@ -15,6 +15,9 @@ class WeatherResult extends StatelessWidget {
             return const CircularProgressIndicator();
 
           case WeatherStatusEnum.loaded:
+            if (state.data == null) {
+              return const Text('No weather data available.');
+            }
             final weather = state.data!.weather;
             final countryFlag = state.data!.countryFlag;
 
