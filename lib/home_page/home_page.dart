@@ -79,6 +79,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             context.read<WeatherBloc>().add(
                                   GetWeatherEvent(city),
                                 );
+
+                            cityController.clear();
                           },
                         ),
                         const SizedBox(height: 18),
