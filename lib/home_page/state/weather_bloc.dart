@@ -17,7 +17,7 @@ class WeatherBloc extends Bloc<WeatherEvents, WeatherState> {
     required this.database,
   }) : super(WeatherState()) {
     on<GetWeatherEvent>((event, emit) async {
-      emit(WeatherState(status: WeatherStatusEnum.loading));
+      emit(state.copyWith(status: WeatherStatusEnum.loading));
 
       try {
         AllModels? data;
@@ -35,11 +35,14 @@ class WeatherBloc extends Bloc<WeatherEvents, WeatherState> {
             country: data.weather.country,
             temperature: data.weather.temperature.toDouble(),
             flag: localFlagPath,
+            windSpeed: data.weather.windSpeed.toString(),
           );
         } else {
+          final history = await database.getAllCountries();
           emit(state.copyWith(
             status: WeatherStatusEnum.error,
             errorMessage: 'No internet connection',
+            weatherHistory: history,
           ));
           return;
         }
@@ -52,9 +55,11 @@ class WeatherBloc extends Bloc<WeatherEvents, WeatherState> {
           weatherHistory: history,
         ));
       } catch (error) {
-        emit(WeatherState(
+        final history = await database.getAllCountries();
+        emit(state.copyWith(
           status: WeatherStatusEnum.error,
           errorMessage: error.toString(),
+          weatherHistory: history,
         ));
       }
     });
@@ -110,6 +115,6 @@ class WeatherBloc extends Bloc<WeatherEvents, WeatherState> {
     final file = File(filePath);
     await file.writeAsBytes(response.bodyBytes);
 
-    return filePath;
+    return fileName;
   }
 }

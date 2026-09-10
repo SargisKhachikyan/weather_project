@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:weather_project/home_page/state/weather_bloc.dart';
 
 class WeatherSearchHistoryList extends StatefulWidget {
@@ -30,19 +31,31 @@ class _WeatherSearchHistoryListState extends State<WeatherSearchHistoryList> {
         final windSpeed = item['wind_speed']?.toString() ?? 'unknown';
 
         return ListTile(
-          leading: flag.isNotEmpty
-              ? Image.file(
-                  File(flag),
-                  width: 32,
-                )
-              : const Icon(
-                  Icons.flag,
-                  size: 32,
-                ),
+          leading: SizedBox(
+            width: 32,
+            height: 32,
+            child: flag.isNotEmpty
+                ? FutureBuilder<Directory>(
+                    future: getApplicationDocumentsDirectory(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return const Icon(Icons.error_outline, size: 32);
+                      }
+                      final file = File('${snapshot.data!.path}/$flag');
+                      if (!file.existsSync()) {
+                        return const Icon(Icons.flag, size: 32);
+                      }
+                      return Image.file(file, fit: BoxFit.cover);
+                    },
+                  )
+                : const Icon(
+                    Icons.flag,
+                    size: 32,
+                  ),
+          ),
           title: Text(country.isNotEmpty ? country : 'Unknown location'),
           subtitle: Text('$temperature° (Wind: $windSpeed)'),
         );
-
       },
     );
   }
