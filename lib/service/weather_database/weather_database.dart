@@ -22,7 +22,7 @@ class WeatherDatabase {
         ''');
         },
       );
-      print('DB path $path');
+      //print('DB path $path');
 
       return true;
     } catch (e) {
